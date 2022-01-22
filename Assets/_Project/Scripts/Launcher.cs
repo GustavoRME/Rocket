@@ -15,7 +15,7 @@ public class Launcher : MonoBehaviour
     [Header("Rotation")]
     [Tooltip("Start the rotation based on acceleration time.How much smaller is the number more early will start.")]
     [SerializeField] [Range(0.0f, 1.0f)] private float _startRotation = 0.0f;
-    
+
     private Vector3 _accelerationForce;
     private Vector3 _startPos;
     
@@ -38,11 +38,8 @@ public class Launcher : MonoBehaviour
         Gizmos.DrawLine(transform.position, _rb.velocity.normalized + transform.position);
     }
 
-    public void UpdateMe()
+    private void Update()
     {
-        if (!_isLaunching)
-            Launch();
-
         float timeElapsed = Time.time - _time;
         bool isAccelerating = timeElapsed < _accelerationTime;
 
@@ -69,12 +66,14 @@ public class Launcher : MonoBehaviour
         }
     }
 
-    private void Launch()
+    public void Launch()
     {
         _time = Time.time;
-        _particle.Play();
         _rb.useGravity = true;
         _isLaunching = true;
+        _particle.Play();
+
+        enabled = true;
     }
 
     public void Restart()
