@@ -68,7 +68,7 @@ public class Launcher : MonoBehaviour
             Vector3 localDirection = transform.up;
 
             float angleDiff = Vector3.SignedAngle(localDirection, rigidBodyDirection, Vector3.forward);
-            transform.Rotate(Vector3.forward, angleDiff);
+            transform.Rotate(Vector3.forward, angleDiff * Time.deltaTime);
         }
 
         if(_audioSource.isPlaying)
