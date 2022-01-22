@@ -5,6 +5,7 @@ using UnityEngine;
 public class Launcher : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb = default;
+    [SerializeField] private ParticleSystem _particle = default;
 
     [Header("Speed up")]
     [SerializeField] private float _accelerationY = 3.5f;
@@ -19,6 +20,7 @@ public class Launcher : MonoBehaviour
     private Vector3 _startPos;
     
     private float _time;
+    private bool _isLaunching;
     private bool _canRotate;
 
     private void Awake()
@@ -27,8 +29,20 @@ public class Launcher : MonoBehaviour
         enabled = false;
     }
 
-    private void Update()
+    private void OnDrawGizmos()
     {
+        if (_rb == null)
+            return;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, _rb.velocity.normalized + transform.position);
+    }
+
+    public void UpdateMe()
+    {
+        if (!_isLaunching)
+            Launch();
+
         float timeElapsed = Time.time - _time;
         bool isAccelerating = timeElapsed < _accelerationTime;
 
@@ -44,7 +58,7 @@ public class Launcher : MonoBehaviour
             _rb.AddForce(_accelerationForce, ForceMode.Acceleration);
             Debug.Log("Its accelerating...");
         }
-        
+
         if (_canRotate)
         {
             Vector3 rigidBodyDirection = _rb.velocity.normalized;
@@ -55,20 +69,12 @@ public class Launcher : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (_rb == null)
-            return;
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, _rb.velocity.normalized + transform.position);
-    }
-
-    public void Launch()
+    private void Launch()
     {
         _time = Time.time;
+        _particle.Play();
         _rb.useGravity = true;
-        enabled = true;
+        _isLaunching = true;
     }
 
     public void Restart()
