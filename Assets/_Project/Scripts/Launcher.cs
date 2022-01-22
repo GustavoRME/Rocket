@@ -6,6 +6,7 @@ public class Launcher : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb = default;
     [SerializeField] private ParticleSystem _particle = default;
+    [SerializeField] private AudioSource _audioSource = default;
 
     [Header("Speed up")]
     [SerializeField] private float _accelerationY = 3.5f;
@@ -15,6 +16,11 @@ public class Launcher : MonoBehaviour
     [Header("Rotation")]
     [Tooltip("Start the rotation based on acceleration time.How much smaller is the number more early will start.")]
     [SerializeField] [Range(0.0f, 1.0f)] private float _startRotation = 0.0f;
+
+    [Space]
+    [SerializeField] private float _minVolume = 0.2f;
+    [SerializeField] private float _maxVolume = 1.0f;
+    [SerializeField] private float _volumeSpeed = 2.0f;
 
     private Vector3 _accelerationForce;
     private Vector3 _startPos;
@@ -64,6 +70,13 @@ public class Launcher : MonoBehaviour
             float angleDiff = Vector3.SignedAngle(localDirection, rigidBodyDirection, Vector3.forward);
             transform.Rotate(Vector3.forward, angleDiff);
         }
+
+        if(_audioSource.isPlaying)
+        {
+            _audioSource.volume = _audioSource.volume < _maxVolume ?
+                _audioSource.volume + _volumeSpeed * Time.deltaTime :
+                 _maxVolume;
+        }
     }
 
     public void Launch()
@@ -71,10 +84,12 @@ public class Launcher : MonoBehaviour
         _time = Time.time;
         _rb.useGravity = true;
         _isLaunching = true;
+        _audioSource.volume = _minVolume;
+        _audioSource.Play();
         _particle.Play();
 
         enabled = true;
-    }
+    }    
 
     public void Restart()
     {
