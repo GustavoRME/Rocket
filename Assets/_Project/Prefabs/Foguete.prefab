@@ -5116,10 +5116,10 @@ GameObject:
   - component: {fileID: 4259571392601708540}
   - component: {fileID: 4259571392602099074}
   - component: {fileID: 4259571392602099075}
+  - component: {fileID: 1222024007}
   - component: {fileID: 4259571392602099070}
   - component: {fileID: 4259571392602099073}
   - component: {fileID: 4259571392602099072}
-  - component: {fileID: 1222024007}
   - component: {fileID: 1222024005}
   - component: {fileID: 4446724821470854739}
   m_Layer: 0
@@ -5260,63 +5260,6 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &4259571392602099070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4259571392602131420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39f4ec759640fbe439c61a177405ae40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _toDocoupleStage: {fileID: 4259571392602131422}
-  _upperStageRb: {fileID: 4259571392602099074}
-  _pushForce: 20
---- !u!114 &4259571392602099073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4259571392602131420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2152f5a7910a7e4ca0ad5ba2294d96b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rocketRigidbody: {fileID: 4259571392602099074}
-  _parachuteRigidbody: {fileID: 4259571393700375756}
-  _noseCone: {fileID: 4259571392601708536}
-  _parentRocket: {fileID: 4259571392601708540}
-  _slowDownSpeed: 2.5
-  _slowDownAngular: 0.5
-  _maxLinearDrag: 20
-  _maxAngularDrag: 5
---- !u!114 &4259571392602099072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4259571392602131420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4606585dd5374484dae2c2d106b69973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rb: {fileID: 4259571392602099074}
-  _particle: {fileID: 4259571392749976053}
-  _audioSource: {fileID: 1222024007}
-  _accelerationY: 5
-  _accelerationX: 1.5
-  _accelerationTime: 5
-  _startRotation: 0.25
-  _minVolume: 0.2
-  _maxVolume: 1
-  _volumeSpeed: 0.2
 --- !u!82 &1222024007
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5413,6 +5356,62 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4259571392602099070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259571392602131420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f4ec759640fbe439c61a177405ae40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _toDocoupleStage: {fileID: 4259571392602131422}
+  _upperStageRb: {fileID: 4259571392602099074}
+  _pushForce: 20
+--- !u!114 &4259571392602099073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259571392602131420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2152f5a7910a7e4ca0ad5ba2294d96b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rocketRigidbody: {fileID: 4259571392602099074}
+  _parachuteRigidbody: {fileID: 4259571393700375756}
+  _noseCone: {fileID: 4259571392601708536}
+  _parentRocket: {fileID: 4259571392601708540}
+  _slowDownSpeed: 2.5
+  _slowDownAngular: 0.5
+  _maxLinearDrag: 20
+  _maxAngularDrag: 5
+--- !u!114 &4259571392602099072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259571392602131420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4606585dd5374484dae2c2d106b69973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rb: {fileID: 4259571392602099074}
+  _particle: {fileID: 4259571392749976053}
+  _audioSource: {fileID: 1222024007}
+  _accelerationY: 5
+  _accelerationX: 1.5
+  _startRotation: 0.25
+  _minVolume: 0.2
+  _maxVolume: 1
+  _volumeSpeed: 0.2
 --- !u!114 &1222024005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5430,7 +5429,6 @@ MonoBehaviour:
   _audioSource: {fileID: 1222024007}
   _accelerationY: 5
   _accelerationX: 1.5
-  _accelerationTime: 5
   _startRotation: 0.25
   _minVolume: 0.2
   _maxVolume: 1
@@ -5448,6 +5446,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rb: {fileID: 4259571392602099074}
+  _OnReachMaximumHeight:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4259571392602131422
 GameObject:
   m_ObjectHideFlags: 0

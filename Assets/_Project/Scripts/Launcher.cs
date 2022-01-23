@@ -11,8 +11,7 @@ public class Launcher : MonoBehaviour
     [Header("Speed up")]
     [SerializeField] private float _accelerationY = 3.5f;
     [SerializeField] private float _accelerationX = 5.0f;
-    [SerializeField] private float _accelerationTime = 15f;
-    
+
     [Header("Rotation")]
     [Tooltip("Start the rotation based on acceleration time.How much smaller is the number more early will start.")]
     [SerializeField] [Range(0.0f, 1.0f)] private float _startRotation = 0.0f;
@@ -24,10 +23,13 @@ public class Launcher : MonoBehaviour
 
     private Vector3 _accelerationForce;
     private Vector3 _startPos;
-    
+
+    private float _accelerationDuration = 15f;
     private float _time;
-    private bool _isLaunching;
+
     private bool _canRotate;
+    public bool IsAccelerating { get; private set; }
+    public bool IsStopEffects { get; private set; }
 
     private void Awake()
     {
@@ -44,14 +46,14 @@ public class Launcher : MonoBehaviour
         Gizmos.DrawLine(transform.position, _rb.velocity.normalized + transform.position);
     }
 
-    private void Update()
+    public void UpdateMe()
     {
         float timeElapsed = Time.time - _time;
-        bool isAccelerating = timeElapsed < _accelerationTime;
+        IsAccelerating = timeElapsed < _accelerationDuration;
 
-        if (isAccelerating)
+        if (IsAccelerating)
         {
-            _canRotate = timeElapsed >= _accelerationTime * _startRotation;
+            _canRotate = timeElapsed >= _accelerationDuration * _startRotation;
             if (_canRotate)
             {
                 _accelerationForce += transform.right * _accelerationX * Time.deltaTime;
@@ -59,7 +61,6 @@ public class Launcher : MonoBehaviour
 
             _accelerationForce += transform.up * _accelerationY * Time.deltaTime;
             _rb.AddForce(_accelerationForce, ForceMode.Acceleration);
-            Debug.Log("Its accelerating...");
         }
 
         if (_canRotate)
@@ -68,10 +69,10 @@ public class Launcher : MonoBehaviour
             Vector3 localDirection = transform.up;
 
             float angleDiff = Vector3.SignedAngle(localDirection, rigidBodyDirection, Vector3.forward);
-            transform.Rotate(Vector3.forward, angleDiff * Time.deltaTime);
+            transform.Rotate(Vector3.forward, angleDiff);
         }
 
-        if(_audioSource.isPlaying)
+        if (_audioSource.isPlaying)
         {
             _audioSource.volume = _audioSource.volume < _maxVolume ?
                 _audioSource.volume + _volumeSpeed * Time.deltaTime :
@@ -79,25 +80,31 @@ public class Launcher : MonoBehaviour
         }
     }
 
-    public void Launch()
+    public void Launch(float duration)
     {
+        _accelerationDuration = duration;
         _time = Time.time;
         _rb.useGravity = true;
-        _isLaunching = true;
         _audioSource.volume = _minVolume;
         _audioSource.Play();
         _particle.Play();
-
-        enabled = true;
+        IsAccelerating = true;
     }    
+
+    public void StopEffects()
+    {
+        _audioSource.Stop();
+        _particle.Stop();
+        IsStopEffects = true;
+    }
 
     public void Restart()
     {
+        StopEffects();
         _rb.useGravity = false;
         _rb.velocity = Vector3.zero;
         _rb.drag = 0.0f;
         _accelerationForce = Vector3.zero;
         transform.position = _startPos;
-        enabled = false;
     }
 }

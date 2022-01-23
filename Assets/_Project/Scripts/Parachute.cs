@@ -20,6 +20,9 @@ public class Parachute : MonoBehaviour
     private float _startDrag;
     private float _startAngularDrag;
 
+    public bool IsSlowedDown { get; private set; }
+    public bool IsOpened { get; private set; }
+
     private void Awake()
     {
         _startDrag = _rocketRigidbody.drag;
@@ -27,7 +30,7 @@ public class Parachute : MonoBehaviour
         enabled = false;
     }
 
-    private void Update()
+    public void UpdateMe()
     {
         //Slow down fall speed smoothly
         if(_rocketRigidbody.drag < _maxLinearDrag)
@@ -41,31 +44,25 @@ public class Parachute : MonoBehaviour
             _parachuteRigidbody.angularDrag += _slowDownAngular * Time.deltaTime;
         }
 
-//#if UNITY_EDITOR
-//        if (_rocketRigidbody.drag >= _maxLinearDrag)
-//            _parachuteRigidbody.drag = _maxLinearDrag;
-        
-//        if (_rocketRigidbody.angularDrag >= _maxAngularDrag)
-//            _parachuteRigidbody.angularDrag = _maxAngularDrag;
-//#endif
+        IsSlowedDown = _rocketRigidbody.drag >= _maxLinearDrag && _parachuteRigidbody.angularDrag >= _maxAngularDrag;
     }
 
     public void OpenParachute()
     {
-        if (enabled)
+        if (IsOpened)
             return;
 
         _noseCone.SetParent(_parachuteRigidbody.transform);
         _parachuteRigidbody.gameObject.SetActive(true);
-        enabled = true;
+        IsOpened = true;
     }
 
     public void CloseParachute()
     {
-        if (!enabled)
+        if (!IsOpened)
             return;
 
-        enabled = false;
+        IsOpened = false;
         _rocketRigidbody.drag = _startDrag;
         _rocketRigidbody.angularDrag = _startAngularDrag;
         _noseCone.SetParent(_parentRocket);
