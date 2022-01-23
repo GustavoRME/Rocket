@@ -10,14 +10,18 @@ public class RocketMonitor : MonoBehaviour
     [SerializeField] private float _raycastDistance = 3.5f;
 
     [Space]
-    public UnityEvent _OnReachMaximumHeight;
+    public UnityEvent<float> _OnReachMaximumHeight;
 
     public float Speed => _rb.velocity.magnitude;
     public float CurrentHeight => _rb.transform.position.y;
+    public bool IsCloseFromFloor => _isCloseFromFloor;
+    public bool IsAccelerating => _isAccelerating;
 
-    public bool IsCloseFromFloor { get; set; }
-
+    [SerializeField] private bool _isAccelerating;
+    private bool _isCloseFromFloor;
     private bool _isReachedMaximumHeight;
+
+    private float _currSpeed;
 
     private void OnDrawGizmos()
     {
@@ -27,13 +31,32 @@ public class RocketMonitor : MonoBehaviour
 
     public void UpdateMonitor()
     {
-        if(!_isReachedMaximumHeight && _rb.velocity.y <= 0.0f)
-        {
-            _OnReachMaximumHeight?.Invoke();
-            _isReachedMaximumHeight = true;
-        }
+        CheckSpeed();
+        CheckCloseFromFloor();
+        CheckMaximumHeight();
+    }
 
+    private void CheckSpeed()
+    {
+        //Because of little tiny difference between these two values,
+        //I need check if they are bigger than 0.01f, else not, keep same value
+        _isAccelerating = Mathf.Abs(Speed - _currSpeed) > 0.01f ? Speed > _currSpeed : _isAccelerating;  
+        _currSpeed = Speed;
+    }
+
+    private void CheckCloseFromFloor()
+    {
         Ray ray = new Ray(_noseCone.transform.position, _noseCone.transform.forward);
-        IsCloseFromFloor = Physics.Raycast(ray, _raycastDistance);
+        _isCloseFromFloor = Physics.Raycast(ray, _raycastDistance);
+    }
+
+    private void CheckMaximumHeight()
+    {
+        if (!_isReachedMaximumHeight && _rb.velocity.y < 0.0f && CurrentHeight > 1.0f)
+        {
+            _OnReachMaximumHeight?.Invoke(CurrentHeight);
+            _isReachedMaximumHeight = true;
+            Debug.Log("Reached maximum height");
+        }
     }
 }

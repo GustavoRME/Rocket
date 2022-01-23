@@ -72,7 +72,7 @@ public class RocketController : MonoBehaviour
                 timeElapsed = Time.time - _time;
             }
 
-            Debug.Log("Its updating the first stage");
+            //Debug.Log("Its updating the first stage");
         }
 
         if(_isSecondStageOn)
@@ -96,8 +96,8 @@ public class RocketController : MonoBehaviour
                 _isSecondStageOn = false;
             }
 
-            Debug.Log("Its updating the second stage");
-            Debug.Log($"time Elpased {timeElapsed}");
+            //Debug.Log("Its updating the second stage");
+            //Debug.Log($"time Elpased {timeElapsed}");
         }
 
         //Only need update the parachute while wasn't slowed down the rocket
